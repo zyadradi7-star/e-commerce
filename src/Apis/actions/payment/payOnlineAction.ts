@@ -14,7 +14,7 @@ export async function payOnline(cartId: string, shippingAddress: shippingData) {
       `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${process.env.NEXTAUTH_URL}`,
       {
         method: "POST",
-        shippingAddress: shippingAddress,
+        body: JSON.stringify({ shippingAddress }),
         headers: {
           token: token,
           "Content-Type": "application/json",

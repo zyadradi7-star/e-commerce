@@ -1,29 +1,36 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { getTokenFun } from "@/Utilities/getTokenData";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  const token = await getToken({ req: req });
+export async function GET() {
+  const userToken = await getTokenFun();
 
-  if (!token)
-    return NextResponse.json({ message: "UnAuthorized", status: 401 });
+  if (!userToken) {
+    return NextResponse.json({ message: "UnAuthorized" }, { status: 401 });
+  }
 
   try {
     const response = await fetch(
       "https://ecommerce.routemisr.com/api/v1/wishlist",
       {
         headers: {
-          token: token?.accessToken,
+          token: userToken,
           "Content-Type": "application/json",
         },
+        cache: "no-store", // إيقاف الكاش لضمان جلب أحدث عناصر المفضلة
       },
     );
-    if (!response.ok)
-      return NextResponse.json({ message: "UnAuthorized", status: 401 });
 
     const payload = await response.json();
-    console.log("payload WishList...", payload);
+
+    if (!response.ok) {
+      return NextResponse.json(payload, { status: response.status });
+    }
+
     return NextResponse.json(payload);
-  } catch (error) {
-    throw new Error("UnAuthorized");
+  } catch {
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

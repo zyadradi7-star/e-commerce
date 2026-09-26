@@ -40,7 +40,7 @@ export default function Navbar() {
   const { data: WishListData } = useQuery({
     queryKey: ["getWishList"],
     queryFn: async () => {
-      const response = await fetch("/api/wishList");
+      const response = await fetch("/api/wishlist");
       if (!response.ok) throw new Error("Failed To Fetch WishList");
       return response.json();
     },

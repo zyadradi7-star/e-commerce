@@ -1,4 +1,4 @@
-"use server"; // ^ use with non get request  => mutation
+"use server";
 
 import { shippingData } from "@/app/checkout/checKoutComp";
 import { getTokenFun } from "@/Utilities/getTokenData";
@@ -11,20 +11,22 @@ export async function payCash(cartId: string, shippingAddress: shippingData) {
 
   try {
     const response = await fetch(
-      `https://ecommerce.routemisr.com/api/v2/orders/${cartId}`,
+      `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${process.env.NEXTAUTH_URL}`,
       {
         method: "POST",
-        shippingAddress: shippingAddress,
+        // التعديل هنا: وضع البيانات داخل body وتغليفها بـ JSON.stringify
+        body: JSON.stringify({ shippingAddress }),
         headers: {
           token: token,
           "Content-Type": "application/json",
         },
       },
     );
+
     if (!response.ok) throw new Error("UnAuthorized");
 
     const payload = await response.json();
-    console.log("payCashDatadsa......", payload);
+    console.log("payOnlineData......", payload);
 
     return payload;
   } catch (error) {
