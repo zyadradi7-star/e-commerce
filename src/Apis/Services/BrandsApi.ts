@@ -1,7 +1,7 @@
 import React from "react";
-import { BrandType } from "@/app/brands/page";
+import { Brand } from "../Types/ProductType";
 
-export default async function getAllBrands(): Promise<BrandType[]> {
+export default async function getAllBrands(): Promise<Brand[]> {
   try {
     const response = await fetch(
       "https://ecommerce.routemisr.com/api/v1/brands",
@@ -15,7 +15,7 @@ export default async function getAllBrands(): Promise<BrandType[]> {
   }
 }
 
-export async function getSingleBrand(prodId: string): Promise<BrandType> {
+export async function getSingleBrand(prodId: string): Promise<Brand> {
   try {
     const response = await fetch(
       `https://ecommerce.routemisr.com/api/v1/brands/${prodId}`,

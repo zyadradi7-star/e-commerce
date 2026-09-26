@@ -36,7 +36,7 @@ const ShopCategory = dynamic(
 export default function Home() {
   return (
     <>
-      <Slider variant="banner" pageList={sliderData} />
+      <Slider pageList={sliderData} />
       <FeaturesBar variant="cards" />
 
       <ShopCategory />

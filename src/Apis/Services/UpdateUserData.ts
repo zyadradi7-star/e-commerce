@@ -1,12 +1,13 @@
-"use server"; // ^ use with non get request  => mutation
+"use server";
 
 import { ProfileFormData } from "@/app/_Components/profileInformationComp/profileInformationComp";
 import { getTokenFun } from "@/Utilities/getTokenData";
 
 export async function updateUserData(Values: ProfileFormData) {
   const token = await getTokenFun();
+
   if (!token) {
-    throw new Error("Unauthorized. Please log in again.");
+    return { success: false, message: "Unauthorized. Please log in again." };
   }
 
   try {
@@ -15,19 +16,30 @@ export async function updateUserData(Values: ProfileFormData) {
       {
         method: "PUT",
         body: JSON.stringify(Values),
-
         headers: {
           token: token,
           "Content-Type": "application/json",
         },
       },
     );
-    if (!response.ok) throw new Error("Failed To Update User Data");
 
     const payload = await response.json();
+
+    // إذا فشل الطلب، نرجع رسالة الخطأ القادمة من الـ API مباشرة
+    if (!response.ok) {
+      return {
+        success: false,
+        message: payload.message || "Failed To Update User Data",
+        errors: payload.errors,
+      };
+    }
+
     console.log("Update User Data....", payload);
-    return payload;
-  } catch (error) {
-    throw new Error("Something went wrong");
+    return { success: true, data: payload };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message || "Something went wrong",
+    };
   }
 }
