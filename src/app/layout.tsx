@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Exo } from "next/font/google";
 import "./globals.css";
+import Footer from "./_Components/Footer/Footer";
+import Navbar from "./_Components/Navbar/Navbar";
+import FirstNav from "./_Components/FirstNav/FirstNav";
+import { Toaster } from "@/components/ui/toast";
+import MyProvider from "./_Components/MyProviders/MyProvider";
+import FeaturesBar from "./_Components/FeaturesBar/FeaturesBar";
+import Providers from "./_Components/MyProviders/TanStackProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const ExoFont = Exo({
+  variable: "--font-Exo-sans",
+  weight: ["100", "400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -19,11 +21,39 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${ExoFont.className} h-full antialiased`}>
+      <body className="overflow-x-hidden">
+        <Providers>
+          <MyProvider>
+            <FirstNav />
+            <Navbar />
+            <div className="">{children}</div>
+            <Toaster position="bottom-right" />
+            <FeaturesBar variant="flat" />
+
+            <Footer />
+          </MyProvider>
+        </Providers>
+      </body>
     </html>
   );
 }
+// try {
+//   const data = await addToCart(prodId);
+//   if (data?.status === "success") {
+//     toast.add({
+//       type: "success",
+//       description: data.message,
+//     });
+//   } else {
+//     toast.add({
+//       type: "error",
+//       description: data?.message,
+//     });
+//   }
+// } catch (error: any) {
+//   toast.add({
+//     type: "error",
+//     description: error?.message || "Login First",
+//   });
+// }
