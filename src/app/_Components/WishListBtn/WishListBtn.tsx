@@ -26,7 +26,7 @@ export default function WishListBtn({
         type: "success",
         description: responseData?.message,
       });
-      query.invalidateQueries({ queryKey: ["getCart"] });
+      query.invalidateQueries({ queryKey: ["getWishList"] });
     },
     onError: () => {
       toast.add({

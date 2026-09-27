@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -13,9 +13,12 @@ import { loginSchema } from "./../../Schema/loginSchema";
 import { signIn } from "next-auth/react";
 import img1 from "../../../assets/images/FreshCart.png";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 export type loginData = zod.infer<typeof loginSchema>;
 
 export default function Login() {
+  const [showNew, setShowNew] = useState(false);
+
   const navigate = useRouter();
   const { register, control, handleSubmit } = useForm<loginData>({
     defaultValues: {
@@ -110,15 +113,30 @@ export default function Login() {
                           >
                             Email
                           </FieldLabel>
-                          <Input
-                            type="email"
-                            className=""
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            placeholder="Enter your Email"
-                            autoComplete="on"
-                          />
+                          <div className="relative">
+                            <Input
+                              type="email"
+                              className="w-full h-auto px-4 py-3 pl-10 border-2 border-gray-200 rounded-xl focus:outline-none! focus:border-green-500! focus:ring-2! focus:ring-green-100! transition-all"
+                              {...field}
+                              id={field.name}
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Enter your Email"
+                              autoComplete="on"
+                            />
+                            <svg
+                              data-prefix="fas"
+                              data-icon="envelope"
+                              className="svg-inline--fa fa-envelope h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                              role="img"
+                              viewBox="0 0 512 512"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M48 64c-26.5 0-48 21.5-48 48 0 15.1 7.1 29.3 19.2 38.4l208 156c17.1 12.8 40.5 12.8 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48L48 64zM0 196L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-188-198.4 148.8c-34.1 25.6-81.1 25.6-115.2 0L0 196z"
+                              />
+                            </svg>
+                          </div>
 
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
@@ -132,30 +150,47 @@ export default function Login() {
                       control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
-                          <Link
-                            href="/forget-password"
-                            className="flex items-center justify-between"
+                          <FieldLabel
+                            className="block text-sm font-semibold text-gray-700 mb-1"
+                            htmlFor={field.name}
                           >
-                            <FieldLabel
-                              className="font-bold"
-                              htmlFor={field.name}
+                            Password
+                          </FieldLabel>
+                          <div className="relative">
+                            <Input
+                              type={showNew ? "text" : "password"}
+                              className="w-full h-auto px-4 py-3 pr-12 rounded-xl border border-gray-200 focus:border-green-500! focus:ring-2! focus:ring-green-500/20! pl-10 outline-none! transition-all"
+                              {...field}
+                              id={field.name}
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Enter your new password"
+                            />
+                            <svg
+                              data-prefix="fas"
+                              data-icon="lock"
+                              className="svg-inline--fa fa-lock w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              aria-hidden="true"
                             >
-                              Password
-                            </FieldLabel>
-                            <span className="text-green-500 hover:text-green-600 font-semibold text-sm">
-                              Forget Password?
-                            </span>
-                          </Link>
-                          <Input
-                            type="password"
-                            className=""
-                            {...field}
-                            id={field.name}
-                            aria-invalid={fieldState.invalid}
-                            placeholder="Enter your Password"
-                            autoComplete="on"
-                          />
-
+                              <path
+                                fill="currentColor"
+                                d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"
+                              />
+                            </svg>
+                            <button
+                              onClick={() => setShowNew(!showNew)}
+                              type="button"
+                              aria-label="Toggle new password visibility"
+                              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showNew ? (
+                                <FaEyeSlash className="w-4 h-4" />
+                              ) : (
+                                <FaEye className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
                           )}
@@ -165,7 +200,7 @@ export default function Login() {
                   </div>
                   <Button
                     type="submit"
-                    className="bg-green-500 w-full hover:bg-green-600 cursor-pointer font-bold text-md mt-3 "
+                    className="w-full bg-green-600 h-auto text-white py-3 px-4 rounded-xl hover:bg-green-700 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed "
                   >
                     Login Now
                   </Button>
