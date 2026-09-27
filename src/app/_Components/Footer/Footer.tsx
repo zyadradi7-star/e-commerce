@@ -15,13 +15,13 @@ import { RiMastercardFill, RiVisaFill } from "react-icons/ri";
 export default function Footer() {
   return (
     <>
-      <div className=" bg-[#101828] pt-9  text-gray-400">
+      <div className="bg-[#101828] pt-9 text-gray-400">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
-            {/* fresh Cart */}
+            {/* Fresh Cart Info */}
             <div className="lg:col-span-4">
               {/* logo */}
-              <div className="bg-white py-2 px-4 rounded-lg inline-block mb-6 ">
+              <div className="bg-white py-2 px-4 rounded-lg inline-block mb-6">
                 <Image src={logo} alt="Fresh Cart" />
               </div>
               {/* description */}
@@ -30,9 +30,9 @@ export default function Footer() {
                 From fashion to electronics, we bring you the best brands at
                 competitive prices with a seamless shopping experience.
               </p>
-              {/* Phone , email , location */}
+              {/* Phone, email, location */}
               <div className="flex flex-col gap-4 mb-6">
-                <div className=" flex gap-4">
+                <div className="flex gap-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -45,12 +45,11 @@ export default function Footer() {
                       clipRule="evenodd"
                     />
                   </svg>
-
                   <span className="hover:text-green-400 cursor-pointer">
                     +1 (800) 123-4567
                   </span>
                 </div>
-                <div className=" flex gap-4">
+                <div className="flex gap-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -60,12 +59,11 @@ export default function Footer() {
                     <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
                     <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
                   </svg>
-
                   <span className="hover:text-green-400 cursor-pointer">
                     support@freshcart.com
                   </span>
                 </div>
-                <div className=" flex gap-4">
+                <div className="flex gap-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -78,211 +76,215 @@ export default function Footer() {
                       clipRule="evenodd"
                     />
                   </svg>
-
                   <span>123 Commerce Street, New York, NY 10001</span>
                 </div>
               </div>
               {/* social icons */}
-              <div className="flex gap-3 mt-5 text-xl ">
-                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center">
-                  <FaFacebookF />{" "}
+              <div className="flex gap-3 mt-5 text-xl">
+                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
+                  <FaFacebookF />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
                   <FaTwitter />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
                   <FaInstagram />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 hover:text-white cursor-pointer flex items-center justify-center transition-colors">
                   <FaYoutube />
                 </div>
               </div>
             </div>
-            {/* shop */}
+
+            {/* Shop Links */}
             <div className="lg:col-span-2">
-              <h3 className="text-white font-bold mb-5 text-lg  leading-normal">
+              <h3 className="text-white font-bold mb-5 text-lg leading-normal">
                 Shop
               </h3>
-              <ul className="">
-                <li className="mt-3.75 hover:text-green-400">
+              <ul className="space-y-3">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/products"
                   >
                     All Products
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400 ">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/our-tutors"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/categories"
                   >
                     Categories
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/become-a-tutor"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/brands"
                   >
                     Brands
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/plans-and-pricing"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/products?category=6439d2d167d9aa4ca970649f"
                   >
                     Electronics
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/terms-and-conditions"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/categories/6439d5b90049ad0b52b90048"
                   >
                     Men's Fashion
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/privacy-policy"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/categories/6439d58a0049ad0b52b9003f"
                   >
                     Women's Fashion
                   </Link>
                 </li>
               </ul>
             </div>
-            {/* Account */}
+
+            {/* Account Links */}
             <div className="lg:col-span-2">
-              <h3 className="text-white font-bold mb-5 text-lg  leading-normal">
+              <h3 className="text-white font-bold mb-5 text-lg leading-normal">
                 Account
               </h3>
-              <ul className="">
-                <li className="mt-3.75 hover:text-green-400">
+              <ul className="space-y-3">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/profile/addresses"
                   >
                     My Account
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/our-tutors"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/allorders"
                   >
                     Order History
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/become-a-tutor"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/wishList"
                   >
                     Wishlist
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/plans-and-pricing"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/cart"
                   >
                     Shopping Cart
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/terms-and-conditions"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/login"
                   >
                     Sign In
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/privacy-policy"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/register"
                   >
                     Create Account
                   </Link>
                 </li>
               </ul>
             </div>
-            {/* Support */}
+
+            {/* Support Links */}
             <div className="lg:col-span-2">
               <h3 className="text-white font-bold mb-5 text-lg leading-normal">
                 Support
               </h3>
-              <ul className="">
-                <li className="mt-3.75 hover:text-green-400">
+              <ul className="space-y-3">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="contact"
                   >
                     Contact Us
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400 ">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/our-tutors"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="#"
                   >
                     Help Center
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/become-a-tutor"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="#"
                   >
                     Shipping Info
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/plans-and-pricing"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="#"
                   >
                     Returns & Refunds
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/terms-and-conditions"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="/allOrders"
                   >
                     Track Order
                   </Link>
                 </li>
               </ul>
             </div>
+
+            {/* Legal Links */}
             <div className="lg:col-span-2">
-              <h3 className="text-white font-bold mb-5 text-lg  leading-normal">
+              <h3 className="text-white font-bold mb-5 text-lg leading-normal">
                 Legal
               </h3>
-              <ul className="">
-                <li className="mt-3.75 hover:text-green-400">
+              <ul className="space-y-3">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="Policy"
                   >
                     Privacy Policy
                   </Link>
                 </li>
-                <li className="mt-3.75   hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/our-tutors"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="Service"
                   >
                     Terms of Service
                   </Link>
                 </li>
-                <li className="mt-3.75  hover:text-green-400">
+                <li>
                   <Link
-                    className="text-deutziawhite hover:text-deutziawhite/80 font-inter text-[15px] font-normal hover:font-semibold"
-                    href="/become-a-tutor"
+                    className="hover:text-green-400 text-[15px] transition-colors"
+                    href="Policy"
                   >
                     Cookie Policy
                   </Link>
@@ -290,22 +292,23 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-          <div className="flex items-center justify-between pb-8 pt-2.25 md:py-8 text-gray-400 text-sm border-t border-gray-800 mt-7.5">
-            <p className=" font-normal ">
+
+          {/* Bottom Bar */}
+          <div className="flex flex-col md:flex-row items-center justify-between pb-8 pt-4 text-gray-400 text-sm border-t border-gray-800 mt-8 gap-4">
+            <p className="font-normal">
               © 2026 FreshCart. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <RiVisaFill />
+                <RiVisaFill className="text-xl" />
                 <span>Visa</span>
               </div>
               <div className="flex items-center gap-2">
-                <RiMastercardFill />
-
+                <RiMastercardFill className="text-xl" />
                 <span>Mastercard</span>
               </div>
               <div className="flex items-center gap-2">
-                <FaPaypal />
+                <FaPaypal className="text-xl" />
                 <span>PayPal</span>
               </div>
             </div>
