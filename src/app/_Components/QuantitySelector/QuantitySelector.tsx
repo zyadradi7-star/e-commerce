@@ -5,10 +5,12 @@ import { FaPlus, FaMinus } from "react-icons/fa6";
 
 interface QuantitySelectorProps {
   stockQuantity: number;
+  price: number;
 }
 
 export default function QuantitySelector({
   stockQuantity,
+  price,
 }: QuantitySelectorProps) {
   const [qty, setQty] = useState<number>(1);
 
@@ -19,6 +21,8 @@ export default function QuantitySelector({
   const decrement = () => {
     if (qty > 1) setQty((prev) => prev - 1);
   };
+
+  const totalPrice = qty * price;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value, 10);
@@ -32,47 +36,57 @@ export default function QuantitySelector({
   };
 
   return (
-    <div className="mb-6">
-      <span className="block text-xs font-semibold text-gray-700 mb-2">
-        Quantity
-      </span>
-      <div className="flex items-center gap-3">
-        <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-gray-50/50">
-          <button
-            type="button"
-            onClick={decrement}
-            disabled={qty <= 1 || stockQuantity === 0}
-            className="px-3.5 py-2 text-gray-500 hover:bg-gray-100 transition text-xs disabled:opacity-30 cursor-pointer"
-            aria-label="Decrease quantity"
-          >
-            <FaMinus />
-          </button>
+    <>
+      <div className="mb-6">
+        <span className="block text-xs font-semibold text-gray-700 mb-2">
+          Quantity
+        </span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-gray-50/50">
+            <button
+              type="button"
+              onClick={decrement}
+              disabled={qty <= 1 || stockQuantity === 0}
+              className="px-3.5 py-2 text-gray-500 hover:bg-gray-100 transition text-xs disabled:opacity-30 cursor-pointer"
+              aria-label="Decrease quantity"
+            >
+              <FaMinus />
+            </button>
 
-          <input
-            type="number"
-            value={qty}
-            onChange={handleChange}
-            min={1}
-            max={stockQuantity}
-            disabled={stockQuantity === 0}
-            className="w-12 text-center text-sm font-semibold text-gray-800 bg-white border-x border-gray-200 py-1.5 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          />
+            <input
+              type="number"
+              value={qty}
+              onChange={handleChange}
+              min={1}
+              max={stockQuantity}
+              disabled={stockQuantity === 0}
+              className="w-12 text-center text-sm font-semibold text-gray-800 bg-white border-x border-gray-200 py-1.5 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
 
-          <button
-            type="button"
-            onClick={increment}
-            disabled={qty >= stockQuantity || stockQuantity === 0}
-            className="px-3.5 py-2 text-gray-500 hover:bg-gray-100 transition text-xs disabled:opacity-30 cursor-pointer"
-            aria-label="Increase quantity"
-          >
-            <FaPlus />
-          </button>
+            <button
+              type="button"
+              onClick={increment}
+              disabled={qty >= stockQuantity || stockQuantity === 0}
+              className="px-3.5 py-2 text-gray-500 hover:bg-gray-100 transition text-xs disabled:opacity-30 cursor-pointer"
+              aria-label="Increase quantity"
+            >
+              <FaPlus />
+            </button>
+          </div>
+
+          <span className="text-xs text-gray-400 font-medium">
+            {stockQuantity} available
+          </span>
         </div>
+      </div>
 
-        <span className="text-xs text-gray-400 font-medium">
-          {stockQuantity} available
+      {/* Total Price Bar */}
+      <div className="bg-gray-50 rounded-xl p-4 mb-6 flex items-center justify-between border border-gray-100">
+        <span className="text-sm text-gray-600 font-medium">Total Price:</span>
+        <span className="text-xl font-bold text-emerald-600">
+          {totalPrice} EGP
         </span>
       </div>
-    </div>
+    </>
   );
 }

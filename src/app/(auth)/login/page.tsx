@@ -150,12 +150,20 @@ export default function Login() {
                       control={control}
                       render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel
-                            className="block text-sm font-semibold text-gray-700 mb-1"
-                            htmlFor={field.name}
-                          >
-                            Password
-                          </FieldLabel>
+                          <div className="flex justify-between items-center">
+                            <FieldLabel
+                              className="block text-sm font-semibold text-gray-700 mb-1"
+                              htmlFor={field.name}
+                            >
+                              Password
+                            </FieldLabel>
+                            <Link
+                              href="/forget-password"
+                              className="text-green-600 hover:text-green-700 cursor-pointer font-semibold text-sm"
+                            >
+                              Forget Password?
+                            </Link>
+                          </div>
                           <div className="relative">
                             <Input
                               type={showNew ? "text" : "password"}

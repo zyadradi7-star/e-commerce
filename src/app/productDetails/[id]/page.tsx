@@ -1,4 +1,4 @@
-import { getSingleProduct } from "@/Apis/Services/ProductsApi";
+import getAllProducts, { getSingleProduct } from "@/Apis/Services/ProductsApi";
 import AddBtn from "@/app/_Components/AddBtn/AddBtn";
 import WishListBtn from "@/app/_Components/WishListBtn/WishListBtn";
 import QuantitySelector from "@/app/_Components/QuantitySelector/QuantitySelector";
@@ -18,6 +18,11 @@ import {
   FaHouse,
   FaChevronRight,
 } from "react-icons/fa6";
+import { CiHeart } from "react-icons/ci";
+
+import ReviewComponent from "@/app/_Components/ReviewComponent/ReviewComponent";
+import SimilarProductsSlider from "@/app/_Components/SimilarProductsSlider/SimilarProductsSlider";
+import { Subcategory } from "@/Apis/Types/ProductType";
 
 interface ProductDetailsProps {
   params: Promise<{ id: string }>;
@@ -26,13 +31,15 @@ interface ProductDetailsProps {
 export default async function ProductDetails({ params }: ProductDetailsProps) {
   const { id } = await params;
   const product = await getSingleProduct(id);
-
+  const allProducts = await getAllProducts({
+    category: product.category?._id,
+  });
+  const relatedProducts = allProducts.filter((p) => p.id !== id);
   if (!product) {
     notFound();
   }
 
   const {
-    count,
     title,
     description,
     price,
@@ -77,19 +84,24 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
             {category && (
               <li className="flex items-center">
                 <Link
-                  href={`/categories/${category._id}`}
+                  href={`/categories/${category?._id}`}
                   className="hover:text-emerald-600 transition"
                 >
-                  {category.name}
+                  {category?.name}
                 </Link>
                 <FaChevronRight className="w-3 h-3 mx-2 text-gray-400" />
               </li>
             )}
-
-            <li
-              className="text-gray-900 font-medium truncate max-w-xs"
-              aria-current="page"
-            >
+            <li className="flex items-center">
+              <Link
+                href={`/subcategory/${product.subcategory[0]?._id}`}
+                className="hover:text-emerald-600 transition"
+              >
+                {product?.subcategory[0]?.name}
+              </Link>
+              <FaChevronRight className="w-3 h-3 mx-2 text-gray-400" />
+            </li>
+            <li className="text-gray-900 font-medium truncate max-w-xs">
               {title}
             </li>
           </ol>
@@ -102,7 +114,7 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
           <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-xs">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Product Gallery */}
-              <div className="lg:col-span-5 sticky top-4">
+              <div className="lg:col-span-5 lg:sticky lg:top-4">
                 <ProductGallery images={galleryImages} />
               </div>
 
@@ -188,17 +200,10 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
                   </div>
 
                   {/* Dynamic Interactive Quantity Selector */}
-                  <QuantitySelector stockQuantity={quantity} />
-
-                  {/* Total Price Bar */}
-                  <div className="bg-gray-50 rounded-xl p-4 mb-6 flex items-center justify-between border border-gray-100">
-                    <span className="text-sm text-gray-600 font-medium">
-                      Total Price:
-                    </span>
-                    <span className="text-xl font-bold text-emerald-600">
-                      {finalPrice} EGP
-                    </span>
-                  </div>
+                  <QuantitySelector
+                    stockQuantity={quantity}
+                    price={finalPrice ?? 0}
+                  />
 
                   {/* Action Buttons */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
@@ -223,10 +228,10 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
                   <div className="flex items-center gap-3 mb-8">
                     <WishListBtn
                       prodId={id}
-                      cls="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-xs cursor-pointer"
+                      cls="flex-1 border-2 py-3 px-4 rounded-xl font-medium transition flex items-center justify-center gap-2"
                       child={
                         <>
-                          <FaHeart className="w-3.5 h-3.5 text-gray-500" />
+                          <CiHeart className="w-4 h-4" />
                           <span>Add to Wishlist</span>
                         </>
                       }
@@ -285,6 +290,11 @@ export default async function ProductDetails({ params }: ProductDetailsProps) {
           </div>
         </div>
       </section>
+
+      {/*product review */}
+      <ReviewComponent product={product} />
+
+      <SimilarProductsSlider products={relatedProducts} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -10,6 +10,7 @@ import { FreeMode, Thumbs } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
+import { ClipLoader } from "react-spinners";
 
 interface ProductGalleryProps {
   images: string[];
@@ -18,7 +19,20 @@ interface ProductGalleryProps {
 export default function ProductGallery({ images }: ProductGalleryProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) {
+    return (
+      <div className="w-full flex flex-col gap-3 select-none">
+        <div className="w-full aspect-square rounded-2xl bg-white border border-gray-100 flex items-center justify-center shadow-xs">
+          <ClipLoader color="#059669" size={40} />
+        </div>
+      </div>
+    );
+  }
   if (!images || images.length === 0) return null;
 
   return (
@@ -62,8 +76,8 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
           watchSlidesProgress={true}
           modules={[FreeMode, Thumbs]}
           breakpoints={{
-            640: { slidesPerView: 4 },
-            768: { slidesPerView: 5 },
+            640: { slidesPerView: 3 },
+            768: { slidesPerView: 4 },
           }}
           className="w-full thumbs-swiper"
         >

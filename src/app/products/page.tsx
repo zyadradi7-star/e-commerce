@@ -1,13 +1,15 @@
+// import getAllProducts from "@/Apis/Services/ProductsApi";
+// import { getSingleBrand } from "@/Apis/Services/BrandsApi";
+
 import getAllProducts from "@/Apis/Services/ProductsApi";
 import { getSingleBrand } from "@/Apis/Services/BrandsApi";
-// استيراد دالة getSingleCategory و getSingleSubCategory
 import {
   getSingleCategory,
   getSingleSubCategory,
 } from "@/Apis/Services/CategoriesApi";
 import { ProductType } from "@/Apis/Types/ProductType";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   FaBoxOpen,
   FaFilter,
@@ -18,6 +20,7 @@ import {
 } from "react-icons/fa";
 import ProductCard from "../_Components/ProductCard/ProductCard";
 import Image from "next/image";
+import { FadeLoader, MoonLoader } from "react-spinners";
 
 interface ProductsProps {
   searchParams: Promise<{
@@ -28,14 +31,74 @@ interface ProductsProps {
   }>;
 }
 
+// 1. مكون الـ Loader المخصص لمنطقة الكروت فقط
+function ProductsGridLoading() {
+  return (
+    <div className="flex flex-col items-center justify-center py-28 min-h-87.5 w-full">
+      {/* 1. سبينر النقاط الخضراء المطابق للصورة */}
+      <FadeLoader color="#16a34a" height={8} width={4} radius={2} margin={2} />
+
+      {/* 2. النص بنفس اللون والحجم والخط */}
+      <p className="text-slate-600 text-base font-medium mt-4 tracking-wide">
+        Loading products...
+      </p>
+    </div>
+  );
+}
+
+// 2. مكون فرعي بجلب المنتجات ويعرض الكروت
+async function ProductsGrid({ filters }: { filters: any }) {
+  const productsRes = await getAllProducts(filters).catch(() => []);
+  const products: ProductType[] = productsRes || [];
+
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-5">
+          <FaBoxOpen className="w-8 h-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">
+          No Products Found
+        </h3>
+        <p className="text-gray-500 mb-6">
+          No products match your current filters.
+        </p>
+        <Link
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors"
+          href="/products"
+        >
+          View All Products
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-gray-500 text-sm font-medium">
+          Showing{" "}
+          <span className="text-gray-900 font-bold">{products.length}</span>{" "}
+          products
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+        {products.map((product: ProductType) => (
+          <ProductCard product={product} key={product._id} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+// 3. الصفحة الرئيسية
 export default async function Products({ searchParams }: ProductsProps) {
-  // 1. قراءة الفلاتر من الـ URL (متوافق مع Next.js 15)
   const filters = await searchParams;
 
-  // 2. جلب البيانات بالتوازي مع حماية الصفحة عند فشل أي API
-  const [productsRes, brandDetails, subCategoryDetails, categoryDetails] =
-    await Promise.all([
-      getAllProducts(filters).catch(() => []),
+  // جلب تفاصيل الفلاتر للهيدر بالتوازي
+  const [brandDetails, subCategoryDetails, categoryDetails] = await Promise.all(
+    [
       filters.brand
         ? getSingleBrand(filters.brand).catch(() => null)
         : Promise.resolve(null),
@@ -45,17 +108,13 @@ export default async function Products({ searchParams }: ProductsProps) {
       filters.category
         ? getSingleCategory(filters.category).catch(() => null)
         : Promise.resolve(null),
-    ]);
+    ],
+  );
 
-  // 3. استخراج مصفوفة المنتجات
-  const products: ProductType[] = productsRes || [];
-
-  // دالة لبناء URL الرابط عند حذف فلتر معين مع الحفاظ على الفلاتر الأخرى
   const getFilterUrl = (
     filterToRemove?: "category" | "brand" | "subcategory",
   ) => {
     const params = new URLSearchParams();
-
     if (filters.category && filterToRemove !== "category") {
       params.set("category", filters.category);
     }
@@ -68,12 +127,10 @@ export default async function Products({ searchParams }: ProductsProps) {
     if (filters.sort) {
       params.set("sort", filters.sort);
     }
-
     const queryString = params.toString();
     return queryString ? `/products?${queryString}` : "/products";
   };
 
-  // عنوان الهيدر الديناميكي
   const getHeaderTitle = () => {
     const titles = [];
     if (categoryDetails) titles.push(categoryDetails.name);
@@ -85,17 +142,15 @@ export default async function Products({ searchParams }: ProductsProps) {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      {/* Header ديناميكي */}
+      {/* Header ثابت */}
       <div className="bg-linear-to-br from-green-600 via-green-500 to-green-400 text-white">
         <div className="container py-10 sm:py-14">
-          {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm text-white/70 mb-6 flex-wrap">
             <Link href="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <span className="text-white/40">/</span>
 
-            {/* Category Breadcrumb */}
             {categoryDetails && (
               <>
                 <Link
@@ -112,7 +167,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               </>
             )}
 
-            {/* SubCategory Breadcrumb */}
             {subCategoryDetails && (
               <>
                 <span className="text-white/90 font-medium">
@@ -122,7 +176,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               </>
             )}
 
-            {/* Brand Breadcrumb */}
             {brandDetails && (
               <>
                 <Link
@@ -144,9 +197,7 @@ export default async function Products({ searchParams }: ProductsProps) {
             )}
           </nav>
 
-          {/* Header Content */}
           <div className="flex items-center gap-5">
-            {/* الشعار أو الأيقونة */}
             <div className="relative flex justify-center items-center text-3xl w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl shadow-xl ring-1 ring-white/30 overflow-hidden shrink-0">
               {brandDetails?.image ? (
                 <Image
@@ -169,7 +220,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               )}
             </div>
 
-            {/* النصوص */}
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 {getHeaderTitle()}
@@ -184,9 +234,9 @@ export default async function Products({ searchParams }: ProductsProps) {
         </div>
       </div>
 
-      {/* Grid المنتجات */}
+      {/* منطقة المحتوى */}
       <div className="container py-8">
-        {/* Active Filters Bar - يظهر عند تفعيل أي فلتر */}
+        {/* شريط الفلاتر النشطة (ثابت لا ينختفي عند التحميل) */}
         {(filters.category || filters.brand || filters.subcategory) && (
           <div className="mb-6 flex items-center gap-3 flex-wrap">
             <span className="flex items-center gap-2 text-sm text-gray-600 font-medium">
@@ -194,7 +244,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               Active Filters:
             </span>
 
-            {/* فلتر القسم الرئيسي (Category Badge) */}
             {filters.category && (
               <Link
                 href={getFilterUrl("category")}
@@ -209,7 +258,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               </Link>
             )}
 
-            {/* فلتر الماركة (Brand Badge) */}
             {filters.brand && (
               <Link
                 href={getFilterUrl("brand")}
@@ -223,7 +271,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               </Link>
             )}
 
-            {/* فلتر الـ Subcategory Badge */}
             {filters.subcategory && (
               <Link
                 href={getFilterUrl("subcategory")}
@@ -240,7 +287,6 @@ export default async function Products({ searchParams }: ProductsProps) {
               </Link>
             )}
 
-            {/* زر مسح كل الفلاتر */}
             <Link
               href="/products"
               className="text-sm text-gray-500 hover:text-gray-700 underline font-medium ml-1 transition-colors"
@@ -250,41 +296,13 @@ export default async function Products({ searchParams }: ProductsProps) {
           </div>
         )}
 
-        {/* عدد المنتجات */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="text-gray-500 text-sm font-medium">
-            Showing{" "}
-            <span className="text-gray-900 font-bold">{products.length}</span>{" "}
-            products
-          </div>
-        </div>
-
-        {/* شبكة المنتجات (Product Grid) */}
-        {products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            {products.map((product: ProductType) => (
-              <ProductCard product={product} key={product._id} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-5">
-              <FaBoxOpen className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">
-              No Products Found
-            </h3>
-            <p className="text-gray-500 mb-6">
-              No products match your current filters.
-            </p>
-            <Link
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors"
-              href="/products"
-            >
-              View All Products
-            </Link>
-          </div>
-        )}
+        {/* تغليف الكروت فقط بـ Suspense لكي يظهر الـ MoonLoader بداخلها عند اختيار أي فلتر */}
+        <Suspense
+          key={JSON.stringify(filters)}
+          fallback={<ProductsGridLoading />}
+        >
+          <ProductsGrid filters={filters} />
+        </Suspense>
       </div>
     </div>
   );

@@ -2,8 +2,10 @@
 
 import { addToCart } from "@/Apis/actions/CartAction/AddToCart";
 import { toast } from "@/components/ui/toast";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { ReactNode } from "react";
+import { FaCheck } from "react-icons/fa";
+import { IoMdCheckmark } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
 
 export default function AddBtn({
@@ -16,9 +18,7 @@ export default function AddBtn({
   prodId: string;
 }) {
   const query = useQueryClient();
-  async function handleAddToCart() {
-    mutate(prodId);
-  }
+
   const {
     data: addProductData,
     mutate,
@@ -39,15 +39,16 @@ export default function AddBtn({
       });
     },
   });
-  if (isAdding) {
-    <ClipLoader color="#41e635" />;
+
+  function handleAddToCart() {
+    mutate(prodId);
   }
 
   console.log("CartData", addProductData);
 
   return (
     <button disabled={isAdding} onClick={handleAddToCart} className={cls}>
-      {child}
+      {isAdding ? <FaCheck className="w-5 h-5" /> : child}
     </button>
   );
 }

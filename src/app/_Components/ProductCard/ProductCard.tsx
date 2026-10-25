@@ -1,7 +1,6 @@
 import { ProductType } from "@/Apis/Types/ProductType";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import {
   FaArrowsRotate,
   FaCartShopping,
@@ -89,7 +88,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
           {/* Product Details */}
           <div className="mt-4">
             <div className="text-xs text-gray-500 mb-1 line-clamp-1">
-              {product?.title}
+              {product?.category?.name}
             </div>
             <p className="font-medium mb-1 cursor-pointer line-clamp-1">
               {product?.description}
@@ -142,7 +141,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                 cls={
                   "cursor-pointer w-10 h-10 rounded-full bg-green-600 flex items-center justify-center shadow text-white"
                 }
-                child={<FaCartShopping />}
+                child={<FaCartShopping className="w-5 h-5" />}
               />
             </div>
           </div>
